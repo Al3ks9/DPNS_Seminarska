@@ -5,25 +5,18 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 if __name__ == '__main__':
-    print(np.__version__)
-    img = cv2.imread("./images/00a66ef9770f9d2d.jpg")
-    # _, binary_image = cv2.threshold(img, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-    # contours, _ = cv2.findContours(binary_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    #
-    # for contour in contours:
-    #     x, y, w, h = cv2.boundingRect(contour)
-    #     cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
-
-    # text = pytesseract.image_to_string(binary_image, lang='eng')
+    img = cv2.imread("./images/00a0db6495982c1d.jpg")
     reader = Reader(['en'])
     results = reader.readtext(img)
+    print(results)
     for result in results:
-        cv2.rectangle(img, result[0][0], result[0][2], (0, 255, 0), 5)
+        bbox = result[0]
+        top_left = tuple((int(i) for i in bbox[0]))
+        bottom_right = tuple((int(i) for i in bbox[2]))
+        cv2.rectangle(img, top_left, bottom_right, (0, 255, 0), 5)
         print(f'Text: {result[1]}, Confidence: {result[2]:.2f}')
 
     plt.imshow(img)
     plt.show()
-
-    # print(text)
 
 
