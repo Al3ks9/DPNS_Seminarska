@@ -1,7 +1,5 @@
 import cv2
-import pytesseract
 from easyocr import Reader
-import numpy as np
 from matplotlib import pyplot as plt
 
 if __name__ == '__main__':
