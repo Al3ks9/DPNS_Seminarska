@@ -1,0 +1,1 @@
+easyocr - https://medium.com/@adityamahajan.work/easyocr-a-comprehensive-guide-5ff1cb850168#:~:text=EasyOCR%20consists%20of%20three%20components,are%20used%20in%20feature%20extraction.
