@@ -5,7 +5,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 if __name__ == '__main__':
-    img = cv2.imread("./images/00a0db6495982c1d.jpg")
+    img = cv2.imread("./images/000a1a700c0c7950.jpg")
     reader = Reader(['en'])
     results = reader.readtext(img)
     print(results)
