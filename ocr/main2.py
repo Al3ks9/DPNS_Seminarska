@@ -10,7 +10,7 @@ if __name__ == '__main__':
     output_folder = './output_images/'
     text_output = open('tesseract_text_outputs.txt', 'w')
 
-    image_files = [img for img in os.listdir(source_folder)]
+    image_files = [img for img in os.listdir(source_folder)[:1]]
     i = 0
 
     for image_file in image_files:
@@ -33,4 +33,6 @@ if __name__ == '__main__':
         text_output.write(text)
         text_output.write('\n')
         cv2.imwrite(output_folder + image_id, img)
+
+        print(d)
 
