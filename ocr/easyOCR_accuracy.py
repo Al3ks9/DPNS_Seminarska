@@ -8,20 +8,15 @@ from PIL import Image
 from easyocr import Reader
 
 
-def easyocr_annotate(img_fn, ez_results, ts_results):
-    fig, axs = plt.subplots(1, 2, figsize=(18, 10))
+def annotate_img(img_fn, res, choice):
+    fig, axs = plt.subplots(1, 1, figsize=(15, 10))
 
-    easy_df = pd.DataFrame(ez_results, columns=['bbox', 'text', 'conf'])
-    easy_results = easy_df[['text', 'bbox']].values.tolist()
-    easy_results = [(x[0], np.array(x[1])) for x in easy_results]
-    keras_ocr.tools.drawAnnotations(plt.imread(img_fn), easy_results, ax=axs[0])
+    df = pd.DataFrame(res, columns=['bbox', 'text', 'conf'])
+    results = df[['text', 'bbox']].values.tolist()
+    results = [(x[0], np.array(x[1])) for x in results]
+    keras_ocr.tools.drawAnnotations(plt.imread(img_fn), results, ax=axs)
 
-    tess_df = pd.DataFrame(ts_results, columns=['bbox', 'text', 'conf'])
-    tess_results = tess_df[['text', 'bbox']].values.tolist()
-    tess_results = [(x[0], np.array(x[1])) for x in tess_results]
-    keras_ocr.tools.drawAnnotations(plt.imread(img_fn), tess_results, ax=axs[1])
-
-    plt.savefig('./compare_images/' + image_fn, bbox_inches='tight', pad_inches=0)
+    plt.savefig('./compare_images_pairs/' + choice + image_fn, bbox_inches='tight', pad_inches=0)
     plt.close(fig)
 
 
@@ -38,7 +33,6 @@ if __name__ == '__main__':
 
         tesseract_results = []
         for i in range(len(tesseract_data['text'])):
-            # if int(tesseract_data['conf'][i]) > 0:
             text = tesseract_data['text'][i]
             conf = float(tesseract_data['conf'][i])
             x, y, w, h = tesseract_data['left'][i], tesseract_data['top'][i], tesseract_data['width'][i], \
@@ -46,4 +40,5 @@ if __name__ == '__main__':
             bbox = [(x, y), (x + w, y), (x + w, y + h), (x, y + h)]
             tesseract_results.append((bbox, text, conf))
 
-        easyocr_annotate(source_folder + image_fn, easy_results, tesseract_results)
+        annotate_img(source_folder + image_fn, easy_results, "easy_ocr_")
+        annotate_img(source_folder + image_fn, tesseract_results, "tess_ocr_")
