@@ -27,6 +27,7 @@ if __name__ == '__main__':
             (x, y, w, h) = (d['left'][k], d['top'][k], d['width'][k], d['height'][k])
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 5)
 
+
         text = pytesseract.image_to_string(gray, lang='eng')
         image_id = os.path.basename(image_file)
         text_output.write(image_id + '\n')
