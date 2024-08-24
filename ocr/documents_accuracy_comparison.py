@@ -43,26 +43,30 @@ def get_text_from_google_doc(doc_id):
 
     return text
 
+
 def levenshtein_accuracy(ocr_text, actual_text):
     distance = Levenshtein.distance(ocr_text, actual_text)
     max_length = max(len(actual_text), len(ocr_text))
-    accuracy = (max_length - distance)/max_length
+    accuracy = (max_length - distance) / max_length
     return accuracy
 
+
 if __name__ == '__main__':
-    document_ids = ['1s9YakEmg4rza_8fW_GriE5K0aUOG_5KENzz0lwHrmt0', '1FFdfIvhcX_K73PuaMNA09539W0aBYLDdzX71HDCNnT0', '1CI-x4_KobW-0EV1EguQ_ZpdyT2K0V9nLg73zJx-KGeE', '1_136_pY9OhX7JXcFABjt-UMkKPxV6J8zkrawYJw-MEM',
-                    '1HOng_ytPX4DZfLs79rO7uYG_rwRfugOMe9MrJ2eUfwA', '1HiaWXXbGe1FlscIq2t4j8Vyz0Aih6nvsBye1O-jsqPk', '1luOyz0e8YF-Jxhe2beLLwJ8E8rKUSqGaubRmzi7rqak',
-                    '19IfCFZJwVh_kqU86eTcNnN_nXxf_nmp2_MP_L46Q1TQ', '1nIXucqeVtxaaxwugR5V29oaSRuzV7w6wbdjnFT19RQU', '1Uw7rk1t2p5kSqxI-uPi5dTn5Y16O5zb3wRNO1MMjRgc']
+    document_ids = ['1s9YakEmg4rza_8fW_GriE5K0aUOG_5KENzz0lwHrmt0', '1FFdfIvhcX_K73PuaMNA09539W0aBYLDdzX71HDCNnT0',
+                    '1CI-x4_KobW-0EV1EguQ_ZpdyT2K0V9nLg73zJx-KGeE', '1_136_pY9OhX7JXcFABjt-UMkKPxV6J8zkrawYJw-MEM',
+                    '1HOng_ytPX4DZfLs79rO7uYG_rwRfugOMe9MrJ2eUfwA', '1HiaWXXbGe1FlscIq2t4j8Vyz0Aih6nvsBye1O-jsqPk',
+                    '1luOyz0e8YF-Jxhe2beLLwJ8E8rKUSqGaubRmzi7rqak', '19IfCFZJwVh_kqU86eTcNnN_nXxf_nmp2_MP_L46Q1TQ',
+                    '1nIXucqeVtxaaxwugR5V29oaSRuzV7w6wbdjnFT19RQU', '1Uw7rk1t2p5kSqxI-uPi5dTn5Y16O5zb3wRNO1MMjRgc']
     reader = Reader(['en'])
     source_folder = './dokumenti_dpns/'
     image_fns = [file for file in os.listdir('./dokumenti_dpns/')[:10]]
     zbir1 = 0
     zbir2 = 0
-    for id in document_ids:
-        actual = get_text_from_google_doc(id)
-        image = Image.open(source_folder + id + '.png')
+    for ID in document_ids:
+        actual = get_text_from_google_doc(ID)
+        image = Image.open(source_folder + ID + '.png')
         tesseract_data = pytesseract.image_to_string(lang='eng', image=image)
-        easy_data = reader.readtext(source_folder + id + '.png')
+        easy_data = reader.readtext(source_folder + ID + '.png')
         easy_text = ''
         for res in easy_data:
             easy_text += res[1]
@@ -71,7 +75,6 @@ if __name__ == '__main__':
         acc2 = levenshtein_accuracy(easy_text, actual)
         zbir1 += acc
         zbir2 += acc2
-
 
     print(zbir1 / len(document_ids))
     print(zbir2 / len(document_ids))
