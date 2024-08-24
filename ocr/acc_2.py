@@ -67,11 +67,12 @@ if __name__ == '__main__':
         for res in easy_data:
             easy_text += res[1]
             easy_text += '\n'
-        acc = levenshtein_accuracy(tesseract_data, actual)
-        acc2 = levenshtein_accuracy(easy_text, actual)
+        acc = levenshtein_accuracy(tesseract_data.lower(), actual.lower())
+        acc2 = levenshtein_accuracy(easy_text.lower(), actual.lower())
         zbir1 += acc
         zbir2 += acc2
 
-
-    print(zbir1 / len(document_ids))
-    print(zbir2 / len(document_ids))
+    prosek1 = zbir1 / len(document_ids)
+    prosek2 = zbir2 / len(document_ids)
+    print(f"Tesseract average accuracy: {prosek1:.2f}")
+    print(f"EasyOCR average accuracy: {prosek2:.2f}")
