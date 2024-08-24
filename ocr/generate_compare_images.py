@@ -13,7 +13,7 @@ def annotate_img(img_fn, res, choice):
 
     df = pd.DataFrame(res, columns=['bbox', 'text', 'conf'])
     results = df[['text', 'bbox']].values.tolist()
-    results = [(x[0], np.array(x[1])) for x in results]
+    results = [(r[0], np.array(r[1])) for r in results]
     keras_ocr.tools.drawAnnotations(plt.imread(img_fn), results, ax=axs)
 
     plt.savefig('./compare_images_pairs/' + choice + image_fn, bbox_inches='tight', pad_inches=0)
@@ -23,7 +23,7 @@ def annotate_img(img_fn, res, choice):
 if __name__ == '__main__':
     reader = Reader(['en'])
     source_folder = './images/'
-    image_fns = [file for file in os.listdir('./images/')[:20]]
+    image_fns = [img for img in os.listdir(source_folder)[:10]]
 
     for image_fn in image_fns:
         easy_results = reader.readtext(source_folder + image_fn)
