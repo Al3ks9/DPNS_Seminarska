@@ -62,19 +62,21 @@ if __name__ == '__main__':
     image_fns = [file for file in os.listdir('./dokumenti_dpns/')[:10]]
     zbir1 = 0
     zbir2 = 0
-    for ID in document_ids:
-        actual = get_text_from_google_doc(ID)
-        image = Image.open(source_folder + ID + '.png')
+    for id in document_ids:
+        actual = get_text_from_google_doc(id)
+        image = Image.open(source_folder + id + '.png')
         tesseract_data = pytesseract.image_to_string(lang='eng', image=image)
-        easy_data = reader.readtext(source_folder + ID + '.png')
+        easy_data = reader.readtext(source_folder + id + '.png')
         easy_text = ''
         for res in easy_data:
             easy_text += res[1]
             easy_text += '\n'
-        acc = levenshtein_accuracy(tesseract_data, actual)
-        acc2 = levenshtein_accuracy(easy_text, actual)
+        acc = levenshtein_accuracy(tesseract_data.lower(), actual.lower())
+        acc2 = levenshtein_accuracy(easy_text.lower(), actual.lower())
         zbir1 += acc
         zbir2 += acc2
 
-    print(zbir1 / len(document_ids))
-    print(zbir2 / len(document_ids))
+    prosek1 = zbir1 / len(document_ids)
+    prosek2 = zbir2 / len(document_ids)
+    print(f"Tesseract average accuracy: {prosek1:.2f}")
+    print(f"EasyOCR average accuracy: {prosek2:.2f}")
