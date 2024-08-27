@@ -1,3 +1,5 @@
+Without preprocessing
+
 EasyOCR
 prvi 10:
 slika so slika = 47.89%
@@ -11,3 +13,7 @@ Tesseract
 Site 423:
 slika so slika = 5.44%
 file so file = 14.29%
+
+Documents accuracy:
+EasyOCR: 75%
+Tesseract: 89%
