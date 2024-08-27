@@ -41,6 +41,9 @@ def get_text_from_google_doc(doc_id):
                 if 'textRun' in elem:
                     text += elem.get('textRun').get('content')
 
+    text = text.replace('\n', '')
+    text = text.replace(' ', '')
+
     return text
 
 
@@ -64,15 +67,21 @@ if __name__ == '__main__':
     zbir2 = 0
     for id in document_ids:
         actual = get_text_from_google_doc(id)
+        # print(actual)
         image = Image.open(source_folder + id + '.png')
         tesseract_data = pytesseract.image_to_string(lang='eng', image=image)
+        tesseract_data = tesseract_data.replace('\n', '')
+        tesseract_data = tesseract_data.replace(' ', '')
         easy_data = reader.readtext(source_folder + id + '.png')
         easy_text = ''
         for res in easy_data:
             easy_text += res[1]
-            easy_text += '\n'
+        easy_text = easy_text.replace('\n', '')
+        easy_text = easy_text.replace(' ', '')
         acc = levenshtein_accuracy(tesseract_data.lower(), actual.lower())
         acc2 = levenshtein_accuracy(easy_text.lower(), actual.lower())
+        # print(tesseract_data)
+        # print(easy_text)
         zbir1 += acc
         zbir2 += acc2
 
