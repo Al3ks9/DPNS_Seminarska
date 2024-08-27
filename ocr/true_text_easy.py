@@ -3,19 +3,28 @@ import os
 import pandas as pd
 
 if __name__ == '__main__':
-    df = pd.read_csv('annot.csv', encoding_errors='ignore')
-    ids = [img.split('.')[0] for img in os.listdir('./images/')]
+    df = pd.read_csv('new__out.csv', encoding_errors='ignore', na_values=None, keep_default_na=False)
 
-    id_df = df.groupby('image_id')
-    print(list(id_df))
-    #
+    # Samo za desettee sliki koi ze vo dokumentacijata
+    # ids = [img for img in os.listdir('./compare_images_pairs/')]
+    # id_df = df.groupby('id')
+    # print([ID.split('_')[2].split('.')[0] for ID in ids[:10]])
+
+    # Site sliki koi imaat entry vo new__out.csv
+    ids = df['id'].unique()
+    id_df = df.groupby('id')
+    print(list(ids))
+    # print(len(ids))
+
     # true_output = open('true_text_easyocr.txt', 'w', errors='ignore')
+    # true_output = open('true_text_easyocr_all.txt', 'w', errors='ignore')
     # i = 0
     # for ID in ids:
     #     print(i)
     #     i += 1
     #     filtered_rows = id_df.get_group(ID)
-    #     text = list(filtered_rows['utf8_string'])
+    #     text = list(filtered_rows['text'])
+    #     print(text)
     #     text.sort()
     #     true_output.write('\n'.join(text))
     #     true_output.write('\n')
