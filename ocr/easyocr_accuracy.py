@@ -42,8 +42,8 @@ if __name__ == '__main__':
     whole_true = true_text.read()
     easy_texts = read_texts(whole_output.splitlines())
     true_texts = read_texts(whole_true.splitlines())
-    print(easy_texts)
-    print(true_texts)
+    print(len(easy_texts))
+    print(len(true_texts))
     acc = 0
     for j in range(423):
         acc += levenshtein_accuracy(easy_texts[j], true_texts[j])

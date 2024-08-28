@@ -17,3 +17,9 @@ file so file = 14.29%
 Documents accuracy:
 EasyOCR: 77%
 Tesseract: 90%
+
+With preprocessing(only images where it's better):
+
+Tesseeact
+site 423: 9.06%
+
