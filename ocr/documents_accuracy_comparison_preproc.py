@@ -1,4 +1,6 @@
 import os
+
+import cv2
 import pytesseract
 from PIL import Image
 from easyocr import Reader
@@ -8,6 +10,7 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+from processing_script import *
 
 SCOPES = ['https://www.googleapis.com/auth/documents.readonly']
 
@@ -67,15 +70,15 @@ if __name__ == '__main__':
     zbir2 = 0
     i = 0
     for id in document_ids:
-        print(i)
         i += 1
+        print(i)
         actual = get_text_from_google_doc(id)
-        # print(actual)
-        image = Image.open(source_folder + id + '.png')
-        tesseract_data = pytesseract.image_to_string(lang='eng', image=image)
+        processed = preprocess_document(id)
+        cv2.imwrite('./output_dokumenti/' + id + '.png', processed)
+        tesseract_data = pytesseract.image_to_string(lang='eng', image=processed)
         tesseract_data = tesseract_data.replace('\n', '')
         tesseract_data = tesseract_data.replace(' ', '')
-        easy_data = reader.readtext(source_folder + id + '.png')
+        easy_data = reader.readtext(processed)
         easy_text = ''
         for res in easy_data:
             easy_text += res[1]
@@ -83,8 +86,6 @@ if __name__ == '__main__':
         easy_text = easy_text.replace(' ', '')
         acc = levenshtein_accuracy(tesseract_data.lower(), actual.lower())
         acc2 = levenshtein_accuracy(easy_text.lower(), actual.lower())
-        # print(tesseract_data)
-        # print(easy_text)
         zbir1 += acc
         zbir2 += acc2
 
