@@ -6,7 +6,7 @@ import numpy as np
 source_folder = './images/'
 df = pd.read_csv('new__out.csv', encoding_errors='ignore', na_values=None, keep_default_na=False)
 id_df = df.groupby('id')
-document_source = './dokumenti_dpns/'
+document_source = './dokumenti/'
 
 
 def levenshtein_accuracy(ocr_text, actual_text):
@@ -25,6 +25,7 @@ def preprocess_image(image_id):
     dilated_image = cv2.dilate(thresh, kernel, iterations=1)
     eroded_image = cv2.erode(dilated_image, kernel, iterations=1)
     return eroded_image
+
 
 def preprocess_image_2(image_id):
     path = source_folder + image_id + '.jpg'
@@ -48,6 +49,34 @@ def preprocess_image_2(image_id):
     final_image = cv2.GaussianBlur(sharpened_image, (1, 1), 0)
 
     return final_image
+
+
+def process_image_demo(path):
+    img = cv2.imread(path)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    contrast_enhanced = cv2.convertScaleAbs(gray, alpha=2.0, beta=20)
+    denoised_image = cv2.fastNlMeansDenoising(contrast_enhanced, None, h=8, templateWindowSize=7, searchWindowSize=21)
+    edges = cv2.Canny(denoised_image, threshold1=50, threshold2=150)
+    kernel_sharpening = np.array([[0, -0.5, 0], [-0.5, 3, -0.5], [0, -0.5, 0]])
+    sharpened_image = cv2.filter2D(denoised_image, -1, kernel_sharpening)
+    sharpened_edges = cv2.bitwise_and(sharpened_image, sharpened_image, mask=edges)
+    final_image = cv2.addWeighted(denoised_image, 0.8, sharpened_edges, 0.2, 0)
+    return final_image
+
+
+def preprocess_image_2_1(image_id):
+    path = source_folder + image_id + '.jpg'
+    img = cv2.imread(path)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    contrast_enhanced = cv2.convertScaleAbs(gray, alpha=2.0, beta=20)
+    denoised_image = cv2.fastNlMeansDenoising(contrast_enhanced, None, h=8, templateWindowSize=7, searchWindowSize=21)
+    edges = cv2.Canny(denoised_image, threshold1=50, threshold2=150)
+    kernel_sharpening = np.array([[0, -0.5, 0], [-0.5, 3, -0.5], [0, -0.5, 0]])
+    sharpened_image = cv2.filter2D(denoised_image, -1, kernel_sharpening)
+    sharpened_edges = cv2.bitwise_and(sharpened_image, sharpened_image, mask=edges)
+    final_image = cv2.addWeighted(denoised_image, 0.8, sharpened_edges, 0.2, 0)
+    return final_image
+
 
 def preprocess_image_3(image_id):
     path = source_folder + image_id + '.jpg'
@@ -80,10 +109,6 @@ def preprocess_image_3(image_id):
 #     dilated_image = cv2.dilate(thresh, kernel, iterations=1)
 #     eroded_image = cv2.erode(dilated_image, kernel, iterations=1)
 #     return eroded_image
-
-
-import cv2
-import numpy as np
 
 
 def preprocess_document(image_id):

@@ -9,7 +9,7 @@ import cv2
 
 def process_image(path):
     original_image = cv2.imread(path)
-    processed_image = preprocess_image(path)
+    processed_image = process_image_demo(path)
     reader = Reader(['en'])
     ez_original = reader.readtext(original_image)
     tess_original = pytesseract.image_to_string(original_image)

@@ -1,7 +1,16 @@
-prvi 10:
-slika so slika = 47.89%
-file so file = 57.58%
+General Images
+- EasyOCR no preprocessing: 33.39%
+- Tesseract no preprocessing: 7.27%
 
-Site 423:
-slika so slika = 16.29%
-file so file = 28.47%
+- EasyOCR with preprocessing: 30.22%
+- Tesseract with preprocessing: 7.07%
+
+- EasyOCR with hybrid preprocessing: 35.02%
+- Tesseract with hybrid preprocessing: 9.24%
+
+Documents
+- EasyOCR no preprocessing: 77%
+- Tesseract no preprocessing: 90%
+
+- EasyOCR with preprocessing: 49%
+- Tesseract with preprocessing: 57%
